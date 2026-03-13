@@ -1,39 +1,57 @@
 plugins {
-	id 'fabric-loom' version '1.14-SNAPSHOT'
-	id 'maven-publish'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
+    id 'maven-publish'
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    // These are now optional because toolchain sets them, 
+    // but we keep them for clarity.
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
+
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
 loom {
-	accessWidenerPath = file("src/main/resources/thunderhack.accesswidener")
+    accessWidenerPath = file("src/main/resources/thunderhack.accesswidener")
 }
 
 repositories {
-	maven {
-		name = "jitpack.io"
-		url = "https://jitpack.io"
-	}
-	maven {
-		name = 'swt-repo'
-		url = "https://maven-eclipse.github.io/maven"
-	}
-	maven {
-		name = "meteor-maven"
-		url = "https://maven.meteordev.org/releases"
-	}
-	maven {
-		name = "meteor-maven-snapshots"
-		url = "https://maven.meteordev.org/snapshots"
-	}
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "meteor-maven"
+        url = "https://maven.meteordev.org/releases"
+    }
+    maven {
+        name = "meteor-snapshots"
+        url = "https://maven.meteordev.org/snapshots"
+    }
+    mavenCentral()
+}
 
-	mavenCentral()
+dependencies {
+    // Basic setup
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Meteor/Baritone dependencies (Crucial for ThunderHack)
+    modCompileOnly "meteordevelopment:baritone:1.21.1-SNAPSHOT"
+    implementation "meteordevelopment:orbit:${project.orbit_version}"
+}
+
+// This ensures the compiled jar is 1.21.1 compatible
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
 }
 
 configurations {
