@@ -7,8 +7,7 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-    // These are now optional because toolchain sets them, 
-    // but we keep them for clarity.
+    // These must be inside the 'java' block in Gradle 9
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
