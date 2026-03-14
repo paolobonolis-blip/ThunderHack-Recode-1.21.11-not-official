@@ -1,6 +1,4 @@
 package thunder.hack.core;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.InputUtil;
@@ -37,14 +35,11 @@ import thunder.hack.utility.render.Render2DEngine;
 import thunder.hack.utility.render.Render3DEngine;
 import thunder.hack.utility.render.TextureStorage;
 import thunder.hack.utility.render.animation.CaptureMark;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
 import static thunder.hack.features.modules.Module.fullNullCheck;
 import static thunder.hack.features.modules.Module.mc;
 import static thunder.hack.features.modules.client.ClientSettings.isRu;
-
 public final class Core {
     public static boolean lockSprint, serverSprint, hold_mouse0, showSkull;
     public static final Map<String, Identifier> HEADS = new ConcurrentHashMap<>();
@@ -53,35 +48,28 @@ public final class Core {
     private final Timer lastPacket = new Timer();
     private final Timer autoSave = new Timer();
     private final Timer setBackTimer = new Timer();
-
     @EventHandler
     @SuppressWarnings("unused")
     public void onTick(PlayerUpdateEvent event) {
         if (fullNullCheck()) return;
-
         Managers.NOTIFICATION.onUpdate();
         Managers.MODULE.onUpdate();
         ThunderGui.getInstance().onTick();
-
         if (ModuleManager.clickGui.getBind().getKey() == -1) {
             Command.sendMessage(Formatting.RED + (isRu() ? "Привязка клавиш Clickgui по умолчанию -> P" : "Default clickgui keybind --> P"));
             Command.sendMessage(Formatting.RED + (isRu() ? "Вы можете получить готовую конфигурацию, выполнив следующую команду -> @cfg cloudlist." : "You can obtain a pre-built configuration by executing the following command -> @cfg cloudlist."));
             ModuleManager.clickGui.setBind(InputUtil.fromTranslationKey("key.keyboard.p").getCode(), false, false);
         }
-
         for (PlayerEntity p : mc.world.getPlayers()) {
             if (p.isDead() || p.getHealth() == 0)
                 ThunderHack.EVENT_BUS.post(new EventDeath(p));
         }
-
         if (!Objects.equals(Managers.COMMAND.getPrefix(), ClientSettings.prefix.getValue()))
             Managers.COMMAND.setPrefix(ClientSettings.prefix.getValue());
-
         new HashMap<>(InteractionUtility.awaiting).forEach((bp, time) -> {
             if (System.currentTimeMillis() - time > Managers.SERVER.getPing() * 2f)
                 InteractionUtility.awaiting.remove(bp);
         });
-
         if (autoSave.every(600000)) {
             Managers.FRIEND.saveFriends();
             Managers.CONFIG.save(Managers.CONFIG.getCurrentConfig());
@@ -90,19 +78,16 @@ public final class Core {
             Managers.NOTIFICATION.publicity("AutoSave", isRu() ? "Сохраняю конфиг.." : "Saving config..", 3, Notification.Type.INFO);
         }
     }
-
     @EventHandler
     public void onPacketSend(PacketEvent.@NotNull Send e) {
         if (e.getPacket() instanceof PlayerMoveC2SPacket && !(e.getPacket() instanceof PlayerMoveC2SPacket.OnGroundOnly))
             lastPacket.reset();
-
         if (e.getPacket() instanceof ClientCommandC2SPacket c) {
             if (c.getMode() == ClientCommandC2SPacket.Mode.START_SPRINTING || c.getMode() == ClientCommandC2SPacket.Mode.STOP_SPRINTING) {
                 if (lockSprint) {
                     e.cancel();
                     return;
                 }
-
                 switch (c.getMode()) {
                     case START_SPRINTING -> serverSprint = true;
                     case STOP_SPRINTING -> serverSprint = false;
@@ -110,7 +95,6 @@ public final class Core {
             }
         }
     }
-
     @EventHandler
     public void onSync(EventSync event) {
         if (fullNullCheck()) return;
@@ -118,16 +102,13 @@ public final class Core {
         CaptureMark.tick();
         Render3DEngine.updateTargetESP();
     }
-
     public void onRender2D(DrawContext e) {
         drawGps(e);
         drawSkull(e);
     }
-
     @EventHandler
     public void onPacketReceive(PacketEvent.Receive e) {
         if (fullNullCheck()) return;
-
         if (e.getPacket() instanceof GameMessageS2CPacket) {
             final GameMessageS2CPacket packet = e.getPacket();
             if (packet.content().getString().contains("skull")) {
@@ -136,15 +117,12 @@ public final class Core {
                 mc.world.playSound(mc.player, mc.player.getBlockPos(), SoundEvents.ENTITY_SKELETON_DEATH, SoundCategory.BLOCKS, 1f, 1f);
             }
         }
-
         if (e.getPacket() instanceof GameJoinS2CPacket)
             Managers.MODULE.onLogin();
-
         if (e.getPacket() instanceof PlayerPositionLookS2CPacket) {
             setBackTimer.reset();
         }
     }
-
     /*
     @EventHandler
     @SuppressWarnings("unused")
@@ -154,39 +132,38 @@ public final class Core {
                 InteractionUtility.awaiting.remove(bp);
         });
     }*/
-
     public void drawSkull(DrawContext e) {
         if (showSkull && !skullTimer.passedMs(3000) && ClientSettings.skullEmoji.getValue()) {
             int xPos = (int) (mc.getWindow().getScaledWidth() / 2f - 150);
             int yPos = (int) (mc.getWindow().getScaledHeight() / 2f - 150);
             float alpha = (1f - (skullTimer.getPassedTimeMs() / 3000f));
-            RenderSystem.setShaderColor(1f, 1f, 1f, alpha);
+            e.setShaderColor(1f, 1f, 1f, alpha);
             e.drawTexture(TextureStorage.skull, xPos, yPos, 0, 0, 300, 300, 300, 300);
-            RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            e.setShaderColor(1f, 1f, 1f, 1f);
         } else showSkull = false;
     }
-
     public void drawGps(DrawContext e) {
         if (ThunderHack.gps_position != null) {
             float dst = getDistance(ThunderHack.gps_position);
             float xOffset = mc.getWindow().getScaledWidth() / 2f;
             float yOffset = mc.getWindow().getScaledHeight() / 2f;
             float yaw = getRotations(new Vec2f(ThunderHack.gps_position.getX(), ThunderHack.gps_position.getZ())) - mc.player.getYaw();
-            e.getMatrices().translate(xOffset, yOffset, 0.0F);
-            e.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(yaw));
-            e.getMatrices().translate(-xOffset, -yOffset, 0.0F);
-            Render2DEngine.drawTracerPointer(e.getMatrices(), xOffset, yOffset - 50, 12.5f, 0.5f, 3.63f, true, true, HudEditor.getColor(1).getRGB());
-            e.getMatrices().translate(xOffset, yOffset, 0.0F);
-            e.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-yaw));
-            e.getMatrices().translate(-xOffset, -yOffset, 0.0F);
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-            FontRenderers.modules.drawCenteredString(e.getMatrices(), "gps (" + dst + "m)", (float) (Math.sin(Math.toRadians(yaw)) * 50f) + xOffset, (float) (yOffset - (Math.cos(Math.toRadians(yaw)) * 50f)) - 23, -1);
-
+            MatrixStack matrices = e.getMatrices();
+            matrices.push();
+            matrices.translate(xOffset, yOffset, 0.0F);
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(yaw));
+            matrices.translate(-xOffset, -yOffset, 0.0F);
+            Render2DEngine.drawTracerPointer(matrices, xOffset, yOffset - 50, 12.5f, 0.5f, 3.63f, true, true, HudEditor.getColor(1).getRGB());
+            matrices.translate(xOffset, yOffset, 0.0F);
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-yaw));
+            matrices.translate(-xOffset, -yOffset, 0.0F);
+            matrices.pop();
+            e.setShaderColor(1F, 1F, 1F, 1F);
+            FontRenderers.modules.drawCenteredString(matrices, "gps (" + dst + "m)", (float) (Math.sin(Math.toRadians(yaw)) * 50f) + xOffset, (float) (yOffset - (Math.cos(Math.toRadians(yaw)) * 50f)) - 23, -1);
             if (dst < 10)
                 ThunderHack.gps_position = null;
         }
     }
-
     @EventHandler
     public void onKeyPress(EventKeyPress event) {
         if (event.getKey() == -1) return;
@@ -194,36 +171,30 @@ public final class Core {
             if (m.getBind() == event.getKey())
                 m.runMacro();
     }
-
     @EventHandler
     public void onMouse(EventMouse event) {
         if (event.getAction() == 0) hold_mouse0 = false;
         if (event.getAction() == 1) hold_mouse0 = true;
     }
-
     public int getDistance(BlockPos bp) {
         double d0 = mc.player.getX() - bp.getX();
         double d2 = mc.player.getZ() - bp.getZ();
         return (int) (MathHelper.sqrt((float) (d0 * d0 + d2 * d2)));
     }
-
     public long getSetBackTime() {
         return setBackTimer.getPassedTimeMs();
     }
-
     public static float getRotations(Vec2f vec) {
         if (mc.player == null) return 0;
-        double x = vec.x - mc.player.getPos().x;
-        double z = vec.y - mc.player.getPos().z;
+        double x = vec.x - mc.player.getX();
+        double z = vec.y - mc.player.getZ();
         return (float) -(Math.atan2(x, z) * (180 / Math.PI));
     }
-
     public void bobView(MatrixStack matrices, float tickDelta) {
         if (!(mc.getCameraEntity() instanceof PlayerEntity playerEntity)) {
             return;
         }
-
-        float g = -(playerEntity.horizontalSpeed + (playerEntity.horizontalSpeed - playerEntity.prevHorizontalSpeed) * tickDelta);
+        float g = -(playerEntity.distanceTraveled + (playerEntity.distanceTraveled - playerEntity.prevDistanceTraveled) * tickDelta);
         float h = MathHelper.lerp(tickDelta, playerEntity.prevStrideDistance, playerEntity.strideDistance);
         matrices.translate(MathHelper.sin(g * (float) Math.PI) * h * 0.1f, -Math.abs(MathHelper.cos(g * (float) Math.PI) * h) * 0.3, 0.0f);
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.sin(g * (float) Math.PI) * h * 3.0f));
