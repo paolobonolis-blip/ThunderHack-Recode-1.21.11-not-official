@@ -50,7 +50,7 @@ public class PlayerManager implements IManager {
     }
     @EventHandler
     public void onTick(EventTick e) {
-        currentPlayerSpeed = (float) Math.hypot(mc.player.getX() - mc.player.getLastX(), mc.player.getLastZ() - mc.player.zOld);
+       currentPlayerSpeed = (float) Math.hypot(mc.player.getX() - mc.player.getLastX(), mc.player.getZ() - mc.player.getLastZ());
         if (speedResult.size() > 20)
             speedResult.poll();
         speedResult.add(currentPlayerSpeed);
