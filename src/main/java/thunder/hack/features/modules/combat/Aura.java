@@ -58,7 +58,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static net.minecraft.util.UseAction.BLOCK;
+import net.minecraft.item.consume.UseAction;
 import static net.minecraft.util.math.MathHelper.wrapDegrees;
 import static thunder.hack.features.modules.client.ClientSettings.isRu;
 import static thunder.hack.utility.math.MathUtility.random;
