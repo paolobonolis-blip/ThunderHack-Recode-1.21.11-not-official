@@ -123,24 +123,9 @@ public final class Core {
             setBackTimer.reset();
         }
     }
-    /*
-    @EventHandler
-    @SuppressWarnings("unused")
-    public void onEntitySpawn(EventEntitySpawn e) {
-        new ArrayList<>(InteractionUtility.awaiting.keySet()).forEach(bp -> {
-            if (e.getEntity() != null && bp.getSquaredDistance(e.getEntity().getPos()) < 4.)
-                InteractionUtility.awaiting.remove(bp);
-        });
-    }*/
     public void drawSkull(DrawContext e) {
-        if (showSkull && !skullTimer.passedMs(3000) && ClientSettings.skullEmoji.getValue()) {
-            int xPos = (int) (mc.getWindow().getScaledWidth() / 2f - 150);
-            int yPos = (int) (mc.getWindow().getScaledHeight() / 2f - 150);
-            float alpha = (1f - (skullTimer.getPassedTimeMs() / 3000f));
-            e.setShaderColor(1f, 1f, 1f, alpha);
-            e.drawTexture(TextureStorage.skull, xPos, yPos, 0, 0, 300, 300, 300, 300);
-            e.setShaderColor(1f, 1f, 1f, 1f);
-        } else showSkull = false;
+        // TODO: drawTexture API changed in 1.21.11, needs RenderPipeline - skipping for now
+        showSkull = false;
     }
     public void drawGps(DrawContext e) {
         if (ThunderHack.gps_position != null) {
@@ -148,7 +133,7 @@ public final class Core {
             float xOffset = mc.getWindow().getScaledWidth() / 2f;
             float yOffset = mc.getWindow().getScaledHeight() / 2f;
             float yaw = getRotations(new Vec2f(ThunderHack.gps_position.getX(), ThunderHack.gps_position.getZ())) - mc.player.getYaw();
-            MatrixStack matrices = e.getMatrices();
+            MatrixStack matrices = new MatrixStack();
             matrices.push();
             matrices.translate(xOffset, yOffset, 0.0F);
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(yaw));
@@ -158,7 +143,6 @@ public final class Core {
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-yaw));
             matrices.translate(-xOffset, -yOffset, 0.0F);
             matrices.pop();
-            e.setShaderColor(1F, 1F, 1F, 1F);
             FontRenderers.modules.drawCenteredString(matrices, "gps (" + dst + "m)", (float) (Math.sin(Math.toRadians(yaw)) * 50f) + xOffset, (float) (yOffset - (Math.cos(Math.toRadians(yaw)) * 50f)) - 23, -1);
             if (dst < 10)
                 ThunderHack.gps_position = null;
@@ -194,8 +178,9 @@ public final class Core {
         if (!(mc.getCameraEntity() instanceof PlayerEntity playerEntity)) {
             return;
         }
-        float g = -(playerEntity.distanceTraveled + (playerEntity.distanceTraveled - playerEntity.prevDistanceTraveled) * tickDelta);
-        float h = MathHelper.lerp(tickDelta, playerEntity.prevStrideDistance, playerEntity.strideDistance);
+        // TODO: strideDistance fields renamed in 1.21.11 - bobbing effect disabled temporarily
+        float g = 0f;
+        float h = 0f;
         matrices.translate(MathHelper.sin(g * (float) Math.PI) * h * 0.1f, -Math.abs(MathHelper.cos(g * (float) Math.PI) * h) * 0.3, 0.0f);
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.sin(g * (float) Math.PI) * h * 3.0f));
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(Math.abs(MathHelper.cos(g * (float) Math.PI - 0.2f) * h) * 0.3f));
