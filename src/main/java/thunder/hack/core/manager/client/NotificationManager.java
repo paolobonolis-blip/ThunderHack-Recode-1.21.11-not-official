@@ -2,6 +2,7 @@ package thunder.hack.core.manager.client;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Formatting;
 import thunder.hack.core.manager.IManager;
 import thunder.hack.features.cmd.Command;
@@ -40,10 +41,13 @@ public class NotificationManager implements IManager {
 
         notifications.removeIf(Notification::shouldDelete);
 
+        // Use a plain MatrixStack instead of DrawContext.getMatrices() since it now returns Matrix3x2fStack
+        MatrixStack matrices = new MatrixStack();
+
         for (Notification n : Lists.newArrayList(notifications)) {
             startY = (float) (startY - n.getHeight() - 3f);
-            n.renderShaders(context.getMatrices(), startY + (isDefault() ? 0 : notifications.size() * 16));
-            n.render(context.getMatrices(), startY + (isDefault() ? 0 : notifications.size() * 16));
+            n.renderShaders(matrices, startY + (isDefault() ? 0 : notifications.size() * 16));
+            n.render(matrices, startY + (isDefault() ? 0 : notifications.size() * 16));
         }
     }
 
@@ -74,13 +78,11 @@ public class NotificationManager implements IManager {
                 if (trayIcon == null) {
                     final SystemTray tray = SystemTray.getSystemTray();
                     final Image image = Toolkit.getDefaultToolkit().createImage("resources/icon.png");
-
                     trayIcon = new TrayIcon(image, "ThunderHack");
                     trayIcon.setImageAutoSize(true);
                     trayIcon.setToolTip("ThunderHack");
                     tray.add(trayIcon);
                 }
-
                 trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
@@ -103,7 +105,6 @@ public class NotificationManager implements IManager {
     private void linux(final String message) {
         final ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command("notify-send", "-a", "ThunderHack", message);
-
         try {
             processBuilder.start();
         } catch (IOException e) {
