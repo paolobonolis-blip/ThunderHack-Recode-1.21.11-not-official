@@ -3,10 +3,10 @@
 </p>
 
 > [!WARNING]
-> Work on ThunderHack Recode is completely stopped, 
+> Oficial work on ThunderHack Recode is completely stopped, 
 > it will be replaced by CatLean, a new free client
 > with closed source code and higher quality modules,
-> you can follow CatLean in my [Discord server](https://discord.gg/PvBhPWdkVD)
+> you can follow CatLean in this [Discord server](https://discord.gg/PvBhPWdkVD)
 
 <div align="center">
 <img src="https://cdn.discordapp.com/attachments/934396624111824900/1230019159027617792/furro.gif?ex=6631cb9c&is=661f569c&hm=b6cee2cd9b6ec238f54c80dcfc421f2c8ecd3f750f2f61a62087d1e01d201e4d&" style="width: 69%">
@@ -50,6 +50,7 @@
 - [@meteordevelopment](https://github.com/meteordevelopment) for orbit
 - [@ladysnake](https://github.com/ladysnake) for satin
 - [@0x3C50](https://github.com/0x3C50/Renderer) for the renderer
+- [fandyt] (https://github.com/paolobonolis-blip) unofficial coder
 
 ## Screenshots
 <details>
@@ -76,5 +77,5 @@
 
 ### Resources
 
-- [Addon Template](https://github.com/cvs0/ThunderHack-Recode-Addon-Template) by cvs0
+- [Addon Template](https://github.com/cvs0/ThunderHack-Recode-Addon-Template) by cvs0 they will not work on 1.21.11 
 - [ThunderHack Addon Docs (COMING SOON)]()
