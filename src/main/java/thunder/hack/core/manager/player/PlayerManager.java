@@ -44,7 +44,7 @@ public class PlayerManager implements IManager {
         lastYaw = ((IClientPlayerEntity) mc.player).getLastYaw();
         lastPitch = ((IClientPlayerEntity) mc.player).getLastPitch();
         if (mc.currentScreen == null) inInventory = false;
-        if (mc.player.isFallFlying() && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
+    if (mc.player.getAbilities().flying && mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA) {
             ticksElytraFlying++;
         } else ticksElytraFlying = 0;
     }
@@ -119,7 +119,7 @@ public class PlayerManager implements IManager {
         if (rt == Aura.RayTrace.OFF)
             return true;
         HitResult result = rayTrace(distance, yaw, pitch);
-        Vec3d startPoint = mc.player.position().add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
+        Vec3d startPoint = new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ()).add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
         double distancePow2 = Math.pow(distance, 2);
         if (result != null)
             distancePow2 = startPoint.squaredDistanceTo(result.getPos());
@@ -144,7 +144,7 @@ public class PlayerManager implements IManager {
     }
     public boolean checkRtx(float yaw, float pitch, float distance, float wallDistance, Entity entity) {
         HitResult result = rayTrace(distance, yaw, pitch);
-        Vec3d startPoint = mc.player.position().add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
+        Vec3d startPoint = new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ()).add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
         double distancePow2 = Math.pow(distance, 2);
         if (result != null)
             distancePow2 = startPoint.squaredDistanceTo(result.getPos());
