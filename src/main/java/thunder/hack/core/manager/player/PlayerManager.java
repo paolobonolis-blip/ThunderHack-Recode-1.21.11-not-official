@@ -240,7 +240,7 @@ public class PlayerManager implements IManager {
     }
     public boolean isInWeb() {
         Box pBox = mc.player.getBoundingBox();
-        BlockPos pBlockPos = BlockPos.ofFloored(new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ());
+        BlockPos pBlockPos = mc.player.getBlockPos();
         for (int x = pBlockPos.getX() - 2; x <= pBlockPos.getX() + 2; x++) {
             for (int y = pBlockPos.getY() - 1; y <= pBlockPos.getY() + 4; y++) {
                 for (int z = pBlockPos.getZ() - 2; z <= pBlockPos.getZ() + 2; z++) {
