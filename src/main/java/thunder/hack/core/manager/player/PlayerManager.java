@@ -106,8 +106,8 @@ public class PlayerManager implements IManager {
         }
     }
     private float getBodyYaw() {
-        double x = mc.player.getX() - mc.player.xOld;
-        double z = mc.player.getZ() - mc.player.zOld;
+        double x = mc.player.getX() - mc.player.getLastX();
+        double z = mc.player.getZ() - mc.player.getLastZ();
         float offset = bodyYaw;
         if ((x * x + z * z) > 0.0025000002f) offset = (float) (MathHelper.atan2(z, x) * 57.295776f - 90.0f);
         if (mc.player.handSwingProgress > 0.0f)
