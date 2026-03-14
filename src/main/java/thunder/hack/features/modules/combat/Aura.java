@@ -245,8 +245,8 @@ public class Aura extends Module {
             InventoryUtility.switchTo(prevSlot);
     }
 
-    private boolean @NotNull [] preAttack() {
-        boolean blocking = mc.player.isUsingItem() && mc.player.getActiveItem().getItem().getUseAction(mc.player.getActiveItem()) == BLOCK;
+   private boolean @NotNull [] preAttack() {
+    boolean blocking = mc.player.isUsingItem();
         if (blocking && unpressShield.getValue())
             sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, Direction.DOWN));
 
