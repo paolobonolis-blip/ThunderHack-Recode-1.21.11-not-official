@@ -44,22 +44,13 @@ import static thunder.hack.features.modules.Module.mc;
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient {
 
-    @Shadow
-    @Final
-    private Window window;
-
-    @Shadow
-    public abstract void setScreen(@Nullable Screen screen);
+    @Shadow @Final private Window window;
+    @Shadow public abstract void setScreen(@Nullable Screen screen);
 
     @Unique
     private String[] shittyServers = {
-            "mineblaze",
-            "musteryworld",
-            "dexland",
-            "masedworld",
-            "vimeworld",
-            "hypemc",
-            "vimemc"
+            "mineblaze", "musteryworld", "dexland", "masedworld",
+            "vimeworld", "hypemc", "vimemc"
     };
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -101,7 +92,6 @@ public abstract class MixinMinecraftClient {
         WindowResizeCallback.EVENT.invoker().onResized((MinecraftClient) (Object) this, this.window);
     }
 
-
     @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
     private void doItemPickHook(CallbackInfo ci) {
         if (ModuleManager.middleClick.isEnabled() && ModuleManager.middleClick.antiPickUp.getValue())
@@ -109,10 +99,7 @@ public abstract class MixinMinecraftClient {
     }
 
     @Inject(method = "setOverlay", at = @At("HEAD"))
-    public void setOverlay(Overlay overlay, CallbackInfo ci) {
-        //   if (overlay instanceof SplashOverlay)
-        //  Managers.SHADER.reloadShaders();
-    }
+    public void setOverlay(Overlay overlay, CallbackInfo ci) {}
 
     @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
     public void setScreenHookPre(Screen screen, CallbackInfo ci) {
@@ -142,13 +129,10 @@ public abstract class MixinMinecraftClient {
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;setIcon(Lnet/minecraft/resource/ResourcePack;Lnet/minecraft/client/util/Icons;)V"))
     private void onChangeIcon(Window instance, ResourcePack resourcePack, Icons icons) throws IOException {
-        // RenderSystem.assertInInitPhase();
-
         if (GLFW.glfwGetPlatform() == 393218) {
             MacWindowUtil.setApplicationIconImage(icons.getMacIcon(resourcePack));
             return;
         }
-
         setWindowIcon(ThunderHack.class.getResourceAsStream("/icon.png"), ThunderHack.class.getResourceAsStream("/icon.png"));
     }
 
@@ -161,13 +145,11 @@ public abstract class MixinMinecraftClient {
             for (int i = 0; i < imgList.size(); i++) {
                 NativeImage nativeImage = NativeImage.read(imgList.get(i));
                 ByteBuffer bytebuffer = MemoryUtil.memAlloc(nativeImage.getWidth() * nativeImage.getHeight() * 4);
-
-                bytebuffer.asIntBuffer().put(nativeImage.copyPixelsRgba());
+                bytebuffer.asIntBuffer().put(nativeImage.getPixelsABGR());
                 buffer.position(i);
                 buffer.width(nativeImage.getWidth());
                 buffer.height(nativeImage.getHeight());
                 buffer.pixels(bytebuffer);
-
                 buffers.add(bytebuffer);
             }
 
@@ -175,28 +157,22 @@ public abstract class MixinMinecraftClient {
                 if (GLFW.glfwGetPlatform() != GLFW.GLFW_PLATFORM_WAYLAND) {
                     GLFW.glfwSetWindowIcon(mc.getWindow().getHandle(), buffer);
                 }
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
             buffers.forEach(MemoryUtil::memFree);
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
     private void doAttackHook(CallbackInfoReturnable<Boolean> cir) {
         final EventAttack event = new EventAttack(null, true);
         ThunderHack.EVENT_BUS.post(event);
-        if (event.isCancelled()) {
-            cir.setReturnValue(false);
-        }
+        if (event.isCancelled()) cir.setReturnValue(false);
     }
 
     @Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
     private void handleBlockBreakingHook(boolean breaking, CallbackInfo ci) {
         EventHandleBlockBreaking event = new EventHandleBlockBreaking();
         ThunderHack.EVENT_BUS.post(event);
-        if (event.isCancelled()) {
-            ci.cancel();
-        }
+        if (event.isCancelled()) ci.cancel();
     }
 }
