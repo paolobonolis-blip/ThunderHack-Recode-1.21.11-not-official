@@ -167,7 +167,7 @@ public class PlayerManager implements IManager {
     public Entity getRtxTarget(float yaw, float pitch, float distance, boolean ignoreWalls) {
         Entity targetedEntity = null;
         HitResult result = ignoreWalls ? null : rayTrace(distance, yaw, pitch);
-        Vec3d vec3d = mc.player.position().add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
+        Vec3d vec3d = new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ()).add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
         double distancePow2 = Math.pow(distance, 2);
         if (result != null) distancePow2 = result.getPos().squaredDistanceTo(vec3d);
         Vec3d vec3d2 = getRotationVector(pitch, yaw);
@@ -188,7 +188,7 @@ public class PlayerManager implements IManager {
         return targetedEntity;
     }
     public Vec3d getRtxPoint(float yaw, float pitch, float distance) {
-        Vec3d vec3d = mc.player.position().add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
+        Vec3d vec3d = new Vec3d(mc.player.getX(), mc.player.getY(), mc.player.getZ()).add(0, mc.player.getEyeHeight(mc.player.getPose()), 0);
         double distancePow2 = Math.pow(distance, 2);
         Vec3d vec3d2 = getRotationVector(pitch, yaw);
         Vec3d vec3d3 = vec3d.add(vec3d2.x * distance, vec3d2.y * distance, vec3d2.z * distance);
