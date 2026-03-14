@@ -194,7 +194,7 @@ public abstract class Module {
             return true;
         }
         if (button < 10) return false;
-        return InputUtil.isKeyPressed(mc.getWindow().getHandle(), button);
+        return InputUtil.isKeyPressed((int) mc.getWindow().getHandle(), button);
     }
     public boolean isKeyPressed(Setting<Bind> bind) {
         if (bind.getValue().getKey() == -1 || ModuleManager.unHook.isEnabled()) return false;
@@ -239,7 +239,7 @@ public abstract class Module {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || getClass() != o.getClass()) return false;     
             Category category = (Category) o;
             return Objects.equals(name, category.name);
         }
