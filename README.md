@@ -50,7 +50,7 @@
 - [@meteordevelopment](https://github.com/meteordevelopment) for orbit
 - [@ladysnake](https://github.com/ladysnake) for satin
 - [@0x3C50](https://github.com/0x3C50/Renderer) for the renderer
-- [fandyt] (https://github.com/paolobonolis-blip) unofficial coder
+- [fandyt](https://github.com/paolobonolis-blip) unofficial coder
 
 ## Screenshots
 <details>
