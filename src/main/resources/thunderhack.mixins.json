@@ -1,0 +1,154 @@
+{
+  "client": [
+    "MixinArmorFeatureRenderer",
+    "MixinBackgroundRenderer",
+    "MixinBlockCollisionSpliterator",
+    {
+      "target": "MixinBossBarHud",
+      "required": false
+    },
+    {
+      "target": "MixinCamera",
+      "required": false
+    },
+    {
+      "target": "MixinCapeFeatureRenderer",
+      "required": false
+    },
+    "MixinChatInputSuggestor",
+    "MixinClientBrandRetriever",
+    "MixinClientConnection",
+    "MixinClientPlayerEntity",
+    {
+      "target": "MixinClientPlayerInteractionManager",
+      "required": false
+    },
+    "MixinClientPlayNetworkHandler",
+    {
+      "target": "MixinClientWorld",
+      "required": false
+    },
+    "MixinCoreShader",
+    {
+      "target": "MixinDrawContext",
+      "required": false
+    },
+    "MixinDynamic",
+    "MixinEndCrystalEntityRenderer",
+    {
+      "target": "MixinEntityRenderer",
+      "required": false
+    },
+    {
+      "target": "MixinGameRenderer",
+      "required": false
+    },
+    "MixinHandledScreen",
+    "MixinHeldItemRenderer",
+    "MixinInGameHud",
+    "MixinInGameOverlayRenderer",
+    "MixinKeyBinding",
+    "MixinKeyboard",
+    "MixinKeyboardInput",
+    "MixinLightmapTextureManager",
+    "MixinLivingEntityRenderer",
+    {
+      "target": "MixinMinecraftClient",
+      "required": false
+    },
+    {
+      "target": "MixinMobSpawnerBlockEntityRenderer",
+      "required": false
+    },
+    "MixinMouse",
+    "MixinMultiplayerScreen",
+    "MixinOtherClientPlayerEntity",
+    {
+      "target": "MixinParticleManager",
+      "required": false
+    },
+    "MixinPlayerListEntry",
+    "MixinPlayerListHud",
+    "MixinScreen",
+    "MixinShaderEffect",
+    "MixinSignBlockEntityRenderer",
+    "MixinSkinTextures",
+    "MixinTextVisitFactory",
+    "MixinTitleScreen",
+    "MixinWorldRenderer",
+    "accesors.IClientPlayerEntity",
+    "accesors.IClientWorldMixin",
+    "accesors.IFrustum",
+    "accesors.IGameRenderer",
+    "accesors.IInteractionManager",
+    "accesors.IMinecraftClient",
+    "accesors.INativeImage",
+    "accesors.IPostProcessShader",
+    "accesors.ISignEditScreen",
+    "accesors.IWorldRenderer",
+    "accesors.ShaderProgramAccessor"
+  ],
+  "mixins": [
+    "MixinAbstractBlock",
+    "MixinAbstractBlockState",
+    {
+      "target": "MixinAbstractHorseEntity",
+      "required": false
+    },
+    {
+      "target": "MixinBlock",
+      "required": false
+    },
+    "MixinBlockItem",
+    {
+      "target": "MixinBoatEntity",
+      "required": false
+    },
+    {
+      "target": "MixinBoatEntityRenderer",
+      "required": false
+    },
+    "MixinCobwebBlock",
+    "MixinEndCrystal",
+    {
+      "target": "MixinEntity",
+      "required": false
+    },
+    "MixinEntityLiving",
+    "MixinFireWorkEntity",
+    "MixinFlowableFluid",
+    {
+      "target": "MixinPlayerEntity",
+      "required": false
+    },
+    "MixinScoreBoard",
+    "MixinScoreboardPlayerScore",
+    {
+      "target": "MixinShulkerBoxBlock",
+      "required": false
+    },
+    "MixinSlimeBlock",
+    "MixinSodiumBlockOcclusionCache",
+    {
+      "target": "MixinSplashOverlay",
+      "required": false
+    },
+    "MixinSweetBerryBushBlock",
+    "MixinTridentItem",
+    "MixinWorld",
+    "MixinWorldChunk",
+    "accesors.IAreaEffectCloudEntity",
+    "accesors.IBeaconBlockEntity",
+    "accesors.IEntity",
+    "accesors.IExplosion",
+    "accesors.IExplosionS2CPacket",
+    "accesors.IGameMessageS2CPacket",
+    "accesors.IHeldItemRenderer",
+    "accesors.ILivingEntity",
+    "accesors.IPlayerInteractBlockC2SPacket",
+    "accesors.IPlayerMoveC2SPacket",
+    "accesors.IPlayerPositionLookS2CPacket",
+    "accesors.ISPacketEntityVelocity",
+    "accesors.ISPacketPlayerPosLook"
+  ]
+}

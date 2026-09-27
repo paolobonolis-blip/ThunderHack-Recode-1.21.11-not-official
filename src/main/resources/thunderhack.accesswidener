@@ -1,0 +1,25 @@
+accessWidener	v1	official
+accessible	class	net/minecraft/network/protocol/game/ServerboundInteractPacket$Action
+accessible	class	net/minecraft/network/protocol/game/ServerboundInteractPacket$ActionType
+accessible	class	net/minecraft/network/protocol/game/ServerboundInteractPacket
+accessible	field	net/minecraft/client/player/LocalPlayer	wasSprinting	Z
+accessible	field	net/minecraft/network/protocol/game/ClientboundPlayerPositionPacket	pitch	F
+accessible	field	net/minecraft/network/protocol/game/ClientboundPlayerPositionPacket	yaw	F
+accessible	field	net/minecraft/client/render/chunk/ChunkBuilder$ChunkData	nonEmptyLayers	Ljava/util/Set;
+accessible	field	net/minecraft/client/render/chunk/ChunkBuilder$ChunkData	occlusionGraph	Lnet/minecraft/client/renderer/chunk/VisibilitySet;
+accessible	field	net/minecraft/world/entity/projectile/FishingHook	DATA_BITING	Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible	field	net/minecraft/network/protocol/game/ServerboundMovePlayerPacket	onGround	Z
+accessible	field	net/minecraft/network/protocol/game/ServerboundMovePlayerPacket	xRot	F
+accessible	field	net/minecraft/network/protocol/game/ServerboundChatPacket	message	Ljava/lang/String;
+accessible	field	net/minecraft/world/entity/WalkAnimationState	pos	F
+accessible	field	net/minecraft/network/protocol/game/ClientboundPlayerInfoRemovePacket	profileIds	Ljava/util/List;
+accessible	field	net/minecraft/client/multiplayer/MultiPlayerGameMode	destroyProgress	F
+accessible	field	net/minecraft/client/MouseHandler	accumulatedDY	D
+accessible	field	net/minecraft/client/MouseHandler	accumulatedDX	D
+accessible	field	net/minecraft/world/entity/Entity	hasVisualFire	Z
+accessible	field	net/minecraft/network/protocol/game/ClientboundSystemChatPacket	content	Lnet/minecraft/network/chat/Component;
+accessible	method	net/minecraft/world/entity/LivingEntity	tryUseTotem	(Lnet/minecraft/world/damagesource/DamageSource;)Z
+accessible	field	net/minecraft/world/level/BaseSpawner	spawnDelay	I
+accessible	class	net/minecraft/client/gui/Gui$HeartType
+accessible	method	net/minecraft/network/protocol/game/ServerboundInteractPacket	write	(Lnet/minecraft/network/FriendlyByteBuf;)V
+accessible	method	net/minecraft/client/multiplayer/ClientLevel	getBlockStatePredictionHandler	()Lnet/minecraft/client/multiplayer/prediction/BlockStatePredictionHandler;

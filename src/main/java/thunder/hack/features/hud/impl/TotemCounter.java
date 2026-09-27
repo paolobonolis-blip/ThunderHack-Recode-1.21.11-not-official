@@ -1,0 +1,74 @@
+package thunder.hack.features.hud.impl;
+
+import com.mojang.math.Axis;
+import meteordevelopment.orbit.EventHandler;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import thunder.hack.core.manager.client.ModuleManager;
+import thunder.hack.events.impl.TotemPopEvent;
+import thunder.hack.gui.font.FontRenderers;
+import thunder.hack.features.hud.HudElement;
+import thunder.hack.utility.render.Render2DEngine;
+import thunder.hack.utility.render.Render3DEngine;
+
+import java.awt.*;
+
+public class TotemCounter extends HudElement {
+    public TotemCounter() {
+        super("TotemCounter", 0, 0);
+    }
+
+    private float angle, prevAngle;
+
+    public void onRender2D(GuiGraphics context) {
+        if (getItemCount(Items.TOTEM_OF_UNDYING) == 0)
+            return;
+
+        float xPos = ModuleManager.crosshair.getAnimatedPosX();
+        float yPos = ModuleManager.crosshair.getAnimatedPosY();
+
+        float factor = Math.abs(angle < 0 ? angle / 15f : 0f);
+
+        context.pose().pushPose();
+        context.pose().translate(xPos, yPos, 0);
+        context.pose().mulPose(Axis.ZN.rotation((float) Math.toRadians(-Render2DEngine.interpolateFloat(prevAngle, angle, Render3DEngine.getTickDelta()))));
+        context.pose().translate(-xPos, -yPos, 0);
+
+        context.pose().translate(xPos - 36, yPos - 9, 0);
+        context.renderItem(Items.TOTEM_OF_UNDYING.getDefaultInstance(), 0, 0);
+        context.pose().translate(-(xPos - 36), -(yPos - 9), 0);
+
+        if (factor > 0)
+            Render2DEngine.drawBlurredShadow(context.pose(), xPos - 34, yPos - 6, 11, 11, 8, Render2DEngine.injectAlpha(new Color(0xFF0000), (int) (255 * factor)));
+
+        FontRenderers.sf_bold_mini.drawCenteredString(context.pose(), getItemCount(Items.TOTEM_OF_UNDYING) + "",xPos - 28, yPos + 8, -1);
+        context.pose().popPose();
+    }
+
+    @EventHandler
+    public void onTotemPop(TotemPopEvent e) {
+        if (e.getEntity() == mc.player)
+            angle = -15;
+    }
+
+    @Override
+    public void onUpdate() {
+        prevAngle = angle;
+        if (angle < 0)
+            angle++;
+    }
+
+    public int getItemCount(Item item) {
+        if (mc.player == null) return 0;
+        int n = 0;
+        int n2 = 44;
+        for (int i = 0; i <= n2; ++i) {
+            ItemStack itemStack = mc.player.getInventory().getItem(i);
+            if (itemStack.getItem() != item) continue;
+            n += itemStack.getCount();
+        }
+        return n;
+    }
+}

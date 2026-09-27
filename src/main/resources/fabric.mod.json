@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "id": "thunderhack",
+  "version": "26.1-release",
+  "icon": "icon.png",
+  "name": "ThunderHack",
+  "description": "Player Assistance Mod - MC 26.1 Fabric Port",
+  "authors": [
+    {
+      "name": "pan4ur",
+      "contact": {
+        "discord": "pan4ur"
+      }
+    },
+    {
+      "name": "06ED",
+      "contact": {
+        "discord": "dinner_enjoyer"
+      }
+    },
+    {
+      "name": "fandyt",
+      "contact": {
+        "discord": "fandyt"
+      }
+    }
+  ],
+  "license": "GNU General Public License v3.0",
+  "accessWidener": "thunderhack.accesswidener",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "thunder.hack.ThunderHack"
+    ]
+  },
+  "contact": {
+    "sources": "https://github.com/paolobonolis-blip/ThunderHack-Recode-1.21.11-not-official-main",
+    "homepage": "https://thunderhack-site.vercel.app",
+    "issues": "https://github.com/paolobonolis-blip/ThunderHack-Recode-1.21.11-not-official-main/issues"
+  },
+  "mixins": [
+    "thunderhack.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.1",
+    "java": ">=25"
+  },
+  "suggests": {
+    "sodium": "*",
+    "exordium": "*",
+    "starlight": "*",
+    "ias": "*",
+    "viafabricplus": "*"
+  }
+}
