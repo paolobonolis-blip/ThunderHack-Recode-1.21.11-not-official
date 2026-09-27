@@ -34,9 +34,9 @@
     ]
   },
   "contact": {
-    "sources": "https://github.com/paolobonolis-blip/ThunderHack-Recode-1.21.11-not-official-main",
-    "homepage": "https://thunderhack-site.vercel.app",
-    "issues": "https://github.com/paolobonolis-blip/ThunderHack-Recode-1.21.11-not-official-main/issues"
+    "sources": "",
+    "homepage": "",
+    "issues": ""
   },
   "mixins": [
     "thunderhack.mixins.json"
